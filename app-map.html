@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Mobilekit Mobile UI Kit</title>
+    <meta name="description" content="Mobilekit HTML Mobile UI Kit">
+    <meta name="keywords" content="bootstrap 4, mobile template, cordova, phonegap, mobile, html" />
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/192x192.png">
+    <link rel="stylesheet" href="assets/css/style.css?v=4">
+    <link rel="manifest" href="__manifest.json">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #mapid{
+            width: 100%;
+            height: calc(100vh - 112px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- loader -->
+    <div id="loader">
+        <div class="spinner-border text-primary" role="status"></div>
+    </div>
+    <!-- * loader -->
+
+    <!-- App Header -->
+    <div class="appHeader bg-primary">
+        <div class="left">
+            <!-- <a href="#" class="headerButton" data-toggle="modal" data-target="#sidebarPanel">
+                <ion-icon name="menu-outline"></ion-icon>
+            </a> -->
+        </div>
+        <div class="pageTitle">
+            Peta Bank Sampah
+        </div>
+        <div class="right">
+            <!-- <a href="javascript:;" class="headerButton toggle-searchbox">
+                <ion-icon name="search-outline"></ion-icon>
+            </a> -->
+        </div>
+    </div>
+    <!-- * App Header -->
+
+    <!-- Search Component -->
+    <!-- <div id="search" class="appHeader">
+        <form class="search-form">
+            <div class="form-group searchbox">
+                <input type="text" class="form-control" placeholder="Search...">
+                <i class="input-icon">
+                    <ion-icon name="search-outline"></ion-icon>
+                </i>
+                <a href="javascript:;" class="ml-1 close toggle-searchbox">
+                    <ion-icon name="close-circle"></ion-icon>
+                </a>
+            </div>
+        </form>
+    </div> -->
+    <!-- * Search Component -->
+
+    <!-- App Capsule -->
+    <div id="appCapsule">
+
+        <div id="mapid"></div>
+
+    </div>
+    <!-- * App Capsule -->
+
+
+    <!-- App Bottom Menu -->
+    <div class="appBottomMenu">
+        <a href="app-home.html" class="item">
+            <div class="col">
+                <ion-icon name="home-outline"></ion-icon>
+            </div>
+        </a>
+        <a href="app-map.html" class="item active">
+            <div class="col">
+                <ion-icon src="./assets/img/svg/map.svg"></ion-icon>
+            </div>
+        </a>
+        <a href="app-pages.html" class="item">
+            <div class="col">
+                <ion-icon src="./assets/img/svg/bin.svg"></ion-icon>
+            </div>
+        </a>
+    </div>
+    <!-- * App Bottom Menu -->
+
+    <!-- welcome notification  -->
+    <div id="notification-welcome" class="notification-box">
+        <div class="notification-dialog android-style">
+            <div class="notification-header">
+                <div class="in">
+                    <img src="assets/img/icon/72x72.png" alt="image" class="imaged w24">
+                    <strong>Mobilekit</strong>
+                    <span>just now</span>
+                </div>
+                <a href="#" class="close-button">
+                    <ion-icon name="close"></ion-icon>
+                </a>
+            </div>
+            <div class="notification-content">
+                <div class="in">
+                    <h3 class="subtitle">Welcome to Mobilekit</h3>
+                    <div class="text">
+                        Mobilekit is a PWA ready Mobile UI Kit Template.
+                        Great way to start your mobile websites and pwa projects.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- * welcome notification -->
+
+    <!-- ///////////// Js Files ////////////////////  -->
+    <!-- Jquery -->
+    <script src="assets/js/lib/jquery-3.4.1.min.js"></script>
+    <!-- Bootstrap-->
+    <script src="assets/js/lib/popper.min.js"></script>
+    <script src="assets/js/lib/bootstrap.min.js"></script>
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"></script>
+    <!-- Owl Carousel -->
+    <script src="assets/js/plugins/owl-carousel/owl.carousel.min.js"></script>
+    <!-- jQuery Circle Progress -->
+    <script src="assets/js/plugins/jquery-circle-progress/circle-progress.min.js"></script>
+    <!-- Base Js File -->
+    <script src="assets/js/base.js"></script>
+
+
+    <script>
+        setTimeout(() => {
+            notification('notification-welcome', 5000);
+        }, 2000);
+    </script>
+
+    <script>
+
+        //var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+
+        var basemaps={
+            'Empty': L.tileLayer(''),
+            "Esri World Dark":L.tileLayer('https://server.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ | Map By <a href="https://idraxy.web.app" target="_blank">Draxgist & Team</a>',
+                maxZoom: 16
+            }),
+            "OSM":L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }),
+            "Esri World Gray":L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ | Map By <a href="https://idraxy.web.app" target="_blank">Draxgist & Team</a>',
+                maxZoom: 16
+            }),
+            "Google Street":L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+                    maxZoom: 20,
+                    subdomains:['mt0','mt1','mt2','mt3'],
+                    attribution:'Map data &copy; Google | Map By <a href="https://idraxy.web.app" target="_blank">Draxgist & Team</a>'
+            }),
+            "Google Hybrid":L.tileLayer('https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
+                    maxZoom: 20,
+                    subdomains:['mt0','mt1','mt2','mt3'],
+                    attribution:'Map data &copy; Google | Map By <a href="https://idraxy.web.app" target="_blank">Draxgist & Team</a>'
+            }),
+            "Google Satelite":L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+                    maxZoom: 20,
+                    subdomains:['mt0','mt1','mt2','mt3'],
+                    attribution:'Map data &copy; Google | Map By <a href="https://idraxy.web.app" target="_blank">Draxgist & Team</a>'
+            }),
+            "Google Traffic":L.tileLayer('https://{s}.google.com/vt/lyrs=m@221097413,traffic&x={x}&y={y}&z={z}', {
+                maxZoom: 20,
+                min5oom: 2,
+                subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+                attribution:'Map data &copy; Google | Map By <a href="https://idraxy.web.app" target="_blank">Draxgist & Team</a>'
+            }),
+            "Google Terrain":L.tileLayer('https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',{
+                maxZoom: 20,
+                subdomains:['mt0','mt1','mt2','mt3'],
+                attribution:'Map data &copy; Google | Map By <a href="https://idraxy.web.app" target="_blank">Draxgist & Team</a>'
+            }),
+        }
+
+        var mymap = L.map('mapid', {
+            center: [-7.2959396,112.7344262],
+            zoom: 12,
+            preferCanvas:true,
+            // wheelPxPerZoomLevel: 110,
+            //zoomDelta: 0.2,
+            //zoomSnap: 0.2,
+            bounceAtZoomLimits:false,
+            minZoom: 8,
+            maxZoom: 20,
+            maxBounds:[
+                [-9.319,110.868],
+                [-5.713,116.103]
+            ],
+            layers: [
+            // 		basemaps["Esri World Gray"]
+            // 		basemaps["OSM"]
+            // 		basemaps["Esri World Dark"]
+                basemaps["Google Hybrid"]
+            ],
+        });
+
+        // L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        //     maxZoom: 18,
+        //     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        //         '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        //         'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        //     id: 'mapbox/streets-v11',
+        //     tileSize: 512,
+        //     zoomOffset: -1
+        // }).addTo(mymap);
+
+        L.marker([-7.2959396,112.7344262]).addTo(mymap)
+            .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+
+        L.circle([51.508, -0.11], 500, {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5
+        }).addTo(mymap).bindPopup("I am a circle.");
+
+        L.polygon([
+            [51.509, -0.08],
+            [51.503, -0.06],
+            [51.51, -0.047]
+        ]).addTo(mymap).bindPopup("I am a polygon.");
+
+
+        var popup = L.popup();
+
+        function onMapClick(e) {
+            popup
+                .setLatLng(e.latlng)
+                .setContent("You clicked the map at " + e.latlng.toString())
+                .openOn(mymap);
+        }
+
+        mymap.on('click', onMapClick);
+
+    </script>
+
+</body>
+
+</html>
